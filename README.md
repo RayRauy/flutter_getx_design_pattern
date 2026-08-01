@@ -1,17 +1,22 @@
-# flutter_getx_design_pattern
+# kps_flutter_getx_design_pattern
 
 A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### Design Pattern Default
+- MVC: Model/View/Controller
+- MVP: Model/View/Presenter
+- MVVM: Model/View/ViewModel
 
-A few resources to get you started if this is your first Flutter project:
+### Application of GetX
+- State Manager: State Management
+- Navigation Manager: Route
+    - Get.toNamed("/splash")
+    - Get.toRemove("/login")
+- Dependency Manager: Service/ServiceImpl -> Create Object
+    From ProductService _productService = new ProductService();
+    To var productService = Get.find(ProductService());
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Bloc
+- LiverPod
