@@ -19,6 +19,6 @@ class AccessToken {
   }
 
   static String getToken() => _storage.read(_accessToken)??"";
-  static String getRefreshToken() => _storage.read(_refreshToken)??"";
+  static  String getRefreshToken() => _storage.read(_refreshToken)??"";
   static String getUsername() => _storage.read(_username)??"";
 }

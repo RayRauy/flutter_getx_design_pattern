@@ -2,22 +2,15 @@ import 'package:flutter/material.dart';
 
 class CustomInputWidget extends StatelessWidget {
   String? hintText, label;
-  TextEditingController? controller;
   bool obscureText;
   Widget? suffixIcon;
-  CustomInputWidget({
-    super.key,
-    this.controller,
-    this.hintText,
-    this.label,
-    this.obscureText = false,
-    this.suffixIcon,
-  });
+  TextEditingController? controller;
+  CustomInputWidget({super.key, this.controller, this.hintText, this.label, this.obscureText = false, this.suffixIcon});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 5),
+      margin: EdgeInsets.symmetric(vertical: 20),
       child: TextField(
         controller: controller,
         obscureText: obscureText,
@@ -37,7 +30,6 @@ class CustomInputWidget extends StatelessWidget {
           ),
           hintText: hintText ?? "",
           label: Text(label ?? ""),
-
         ),
       ),
     );

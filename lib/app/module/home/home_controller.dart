@@ -1,14 +1,15 @@
 import 'package:get/get.dart';
-
-import '../../data/access_token.dart';
+import 'package:flutter_getx_design_pattern/app/data/access_token.dart';
 
 class HomeController extends GetxController {
+
   var loading = false.obs;
-  Future<void> onLogout() async{
+  onLogout()async{
     loading.value = true;
     AccessToken.removeToken();
     await Future.delayed(Duration(seconds: 2));
     loading.value = false;
     Get.offNamed("/login");
   }
+
 }
