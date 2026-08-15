@@ -1,7 +1,0 @@
-- [x] Update `ApiNetworkService` interface with `delete`
-- [x] Update `ApiNetworkServiceImpl` with `delete` implementation
-- [x] Update `PostRepository` interface with `deletePost`
-- [x] Update `PostRepositoryImpl` with `deletePost` implementation
-- [x] Update `PostController` with `deletePost` logic
-- [x] Update `PostView` with delete icon and confirmation dialog
-- [x] Verify functionality and syntax
