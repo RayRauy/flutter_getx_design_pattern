@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_getx_design_pattern/app/module/post/post_update_view.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter_getx_design_pattern/app/module/auth/login/login_binding.dart';
@@ -18,6 +19,7 @@ import 'app/cores/network/api_network_service.dart';
 import 'app/cores/network/api_network_service_impl.dart';
 import 'app/module/auth/repository/auth_repository.dart';
 import 'app/module/auth/repository/auth_repository_impl.dart';
+import 'app/module/post/post_create_view.dart';
 
 Future<void> main() async {
   await GetStorage.init();
@@ -46,9 +48,10 @@ class MyApp extends StatelessWidget {
         GetPage(name: "/home", page: ()=> HomeView(), binding: HomeBinding(), transition: Transition.leftToRight),
         GetPage(name: "/login", page: ()=> LoginView(), binding: LoginBinding(), transition: Transition.leftToRight),
         GetPage(name: "/register", page: ()=> RegisterView(), binding: RegisterBinding(), transition: Transition.leftToRight),
-        GetPage(name: "/posts", page: ()=> PostView(), binding: PostBinding(), transition: Transition.leftToRight)
+        GetPage(name: "/posts", page: ()=> PostView(), binding: PostBinding(), transition: Transition.leftToRight),
+        GetPage(name: "/post-create", page: ()=> PostCreateView(), binding: PostBinding(), transition: Transition.leftToRight),
+        GetPage(name: "/post-update", page: ()=> PostUpdateView(), binding: PostBinding(), transition: Transition.leftToRight)
       ],
     );
   }
 }
-

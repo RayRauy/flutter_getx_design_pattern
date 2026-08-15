@@ -56,7 +56,6 @@ class ApiNetworkServiceImpl extends ApiNetworkService {
   Future<bool> refreshToken() async {
     var url = Uri.parse(ConstantUri.refreshPath);
     var refreshToken = AccessToken.getRefreshToken();
-    print("DEBUG: Refreshing token with: $refreshToken");
     
     var response = await http.post(
       url,
@@ -66,9 +65,6 @@ class ApiNetworkServiceImpl extends ApiNetworkService {
       headers: _headers,
     );
 
-    print("DEBUG: Refresh Status Code: ${response.statusCode}");
-    print("DEBUG: Refresh Response Body: ${response.body}");
-
     if (response.statusCode == 200 || response.statusCode == 201) {
       var loginResponse = LoginResponse.fromJson(jsonDecode(response.body));
       AccessToken.saveToken(
@@ -76,10 +72,8 @@ class ApiNetworkServiceImpl extends ApiNetworkService {
         refresh: loginResponse.refreshToken,
         username: loginResponse.user?.username,
       );
-      print("DEBUG: Token refreshed. New Access Token: ${loginResponse.accessToken}");
       return true;
     } else {
-      print("DEBUG: Refresh failed. Redirecting to login.");
       AccessToken.removeToken();
       Get.offAllNamed("/login");
       return false;
@@ -89,25 +83,77 @@ class ApiNetworkServiceImpl extends ApiNetworkService {
   @override
   Future get(String uri) async {
     var url = Uri.parse(uri);
-    var token = AccessToken.getToken();
-    print("DEBUG: GET $uri");
-    print("DEBUG: Current Token: $token");
-    
     var response = await http.get(url, headers: _authHeaders);
-    print("DEBUG: Initial GET Status: ${response.statusCode}");
 
     if (response.statusCode == 200) {
       return response.body;
     }
 
     if (response.statusCode == 401) {
-      print("DEBUG: 401 Unauthorized detected. Attempting refresh...");
       if (await refreshToken()) {
-        var newToken = AccessToken.getToken();
-        print("DEBUG: Retrying GET $uri with new token: $newToken");
         var retryResponse = await http.get(url, headers: _authHeaders);
-        print("DEBUG: Retry GET Status: ${retryResponse.statusCode}");
         if (retryResponse.statusCode == 200) {
+          return retryResponse.body;
+        }
+      }
+    }
+    return null;
+  }
+
+  @override
+  Future post(String uri, body) async {
+    var url = Uri.parse(uri);
+    var response = await http.post(url, headers: _authHeaders, body: jsonEncode(body));
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return response.body;
+    }
+
+    if (response.statusCode == 401) {
+      if (await refreshToken()) {
+        var retryResponse = await http.post(url, headers: _authHeaders, body: jsonEncode(body));
+        if (retryResponse.statusCode == 200 || retryResponse.statusCode == 201) {
+          return retryResponse.body;
+        }
+      }
+    }
+    return null;
+  }
+
+  @override
+  Future put(String uri, body) async {
+    var url = Uri.parse(uri);
+    var response = await http.put(url, headers: _authHeaders, body: jsonEncode(body));
+
+    if (response.statusCode == 200) {
+      return response.body;
+    }
+
+    if (response.statusCode == 401) {
+      if (await refreshToken()) {
+        var retryResponse = await http.put(url, headers: _authHeaders, body: jsonEncode(body));
+        if (retryResponse.statusCode == 200) {
+          return retryResponse.body;
+        }
+      }
+    }
+    return null;
+  }
+
+  @override
+  Future delete(String uri) async {
+    var url = Uri.parse(uri);
+    print("DEBUG: DELETE $uri");
+    var response = await http.delete(url, headers: _authHeaders);
+
+    if (response.statusCode == 200 || response.statusCode == 204) {
+      return response.body;
+    }
+
+    if (response.statusCode == 401) {
+      if (await refreshToken()) {
+        var retryResponse = await http.delete(url, headers: _authHeaders);
+        if (retryResponse.statusCode == 200 || retryResponse.statusCode == 204) {
           return retryResponse.body;
         }
       }
